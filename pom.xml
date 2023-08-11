@@ -39,6 +39,13 @@
                         </goals>
                         <configuration>
                             <createDependencyReducedPom>false</createDependencyReducedPom>
+                            <minimizeJar>true</minimizeJar>
+                            <relocations>
+                                <relocation>
+                                    <pattern>me.hsgamer.hscore</pattern>
+                                    <shadedPattern>me.hsgamer.blocommands.core</shadedPattern>
+                                </relocation>
+                            </relocations>
                         </configuration>
                     </execution>
                 </executions>
@@ -84,6 +91,11 @@
         <dependency>
             <groupId>me.hsgamer</groupId>
             <artifactId>hscore-config-proxy</artifactId>
+            <version>4.3.10</version>
+        </dependency>
+        <dependency>
+            <groupId>me.hsgamer</groupId>
+            <artifactId>hscore-task</artifactId>
             <version>4.3.10</version>
         </dependency>
     </dependencies>

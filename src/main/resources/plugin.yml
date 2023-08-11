@@ -1,0 +1,5 @@
+name: BloCommands
+version: '${project.version}'
+main: me.hsgamer.blocommands.BloCommands
+api-version: '1.13'
+folia-supported: true

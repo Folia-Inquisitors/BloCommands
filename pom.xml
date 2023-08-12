@@ -90,6 +90,11 @@
         </dependency>
         <dependency>
             <groupId>me.hsgamer</groupId>
+            <artifactId>hscore-bukkit-utils</artifactId>
+            <version>4.3.10</version>
+        </dependency>
+        <dependency>
+            <groupId>me.hsgamer</groupId>
             <artifactId>hscore-config-proxy</artifactId>
             <version>4.3.10</version>
         </dependency>

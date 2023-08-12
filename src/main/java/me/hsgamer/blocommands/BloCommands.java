@@ -22,7 +22,12 @@ public final class BloCommands extends BasePlugin {
 
     @Override
     public void postEnable() {
-        // TODO
+        blockManager.setup();
+    }
+
+    @Override
+    public void disable() {
+        blockManager.save();
     }
 
     public MainConfig getMainConfig() {

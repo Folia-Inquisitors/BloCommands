@@ -53,6 +53,12 @@ public class ActionManager {
                 .findFirst();
     }
 
+    public List<Action> deserialize(List<String> commands) {
+        List<Action> actions = new ArrayList<>();
+        commands.forEach(command -> deserialize(command).ifPresent(actions::add));
+        return actions;
+    }
+
     public Optional<String> serialize(Action action) {
         return actionSerializers.stream()
                 .filter(actionSerializer -> actionSerializer.clazz.isInstance(action))
@@ -64,6 +70,12 @@ public class ActionManager {
                     }
                 })
                 .findFirst();
+    }
+
+    public List<String> serialize(List<Action> actions) {
+        List<String> commands = new ArrayList<>();
+        actions.forEach(action -> serialize(action).ifPresent(commands::add));
+        return commands;
     }
 
     private static class ActionSerializer {

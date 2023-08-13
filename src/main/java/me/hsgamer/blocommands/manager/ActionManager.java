@@ -14,13 +14,12 @@ public class ActionManager {
     private final List<ActionSerializer> actionSerializers = new ArrayList<>();
 
     public ActionManager() {
-        registerAction(PlayerAction.class, "player", PlayerAction::new, PlayerAction::getCommand);
-        registerAction(PlayerAction.class, "", PlayerAction::new, PlayerAction::getCommand);
-        registerAction(ConsoleAction.class, "console", ConsoleAction::new, ConsoleAction::getCommand);
-        registerAction(MessageAction.class, "message", MessageAction::new, MessageAction::getCommand);
+        registerAction(PlayerAction.class, PlayerAction::new, PlayerAction::getCommand, "player", "");
+        registerAction(ConsoleAction.class, ConsoleAction::new, ConsoleAction::getCommand, "console");
+        registerAction(MessageAction.class, MessageAction::new, MessageAction::getCommand, "message");
     }
 
-    public <T extends Action> void registerAction(Class<T> clazz, String name, Function<String, T> deserializer, Function<T, String> serializer) {
+    public <T extends Action> void registerAction(Class<T> clazz, Function<String, T> deserializer, Function<T, String> serializer, String... name) {
         actionSerializers.add(new ActionSerializer(clazz, name, deserializer::apply, action -> {
             try {
                 return serializer.apply(clazz.cast(action));
@@ -35,14 +34,21 @@ public class ActionManager {
         String actionName;
         String actionCommand;
         if (split.length > 1) {
-            actionName = split[0];
-            actionCommand = split[1];
+            actionName = split[0].trim();
+            actionCommand = split[1].trim();
         } else {
             actionName = "";
-            actionCommand = command;
+            actionCommand = command.trim();
         }
         return actionSerializers.stream()
-                .filter(actionSerializer -> actionSerializer.name.equalsIgnoreCase(actionName))
+                .filter(actionSerializer -> {
+                    for (String name : actionSerializer.name) {
+                        if (name.equalsIgnoreCase(actionName)) {
+                            return true;
+                        }
+                    }
+                    return false;
+                })
                 .map(actionSerializer -> actionSerializer.deserializer.apply(actionCommand))
                 .findFirst();
     }
@@ -50,17 +56,23 @@ public class ActionManager {
     public Optional<String> serialize(Action action) {
         return actionSerializers.stream()
                 .filter(actionSerializer -> actionSerializer.clazz.isInstance(action))
-                .map(actionSerializer -> actionSerializer.serializer.apply(action))
+                .map(actionSerializer -> {
+                    try {
+                        return actionSerializer.name[0] + ": " + actionSerializer.serializer.apply(actionSerializer.clazz.cast(action));
+                    } catch (ClassCastException e) {
+                        throw new IllegalArgumentException("The action is not " + actionSerializer.clazz.getName());
+                    }
+                })
                 .findFirst();
     }
 
     private static class ActionSerializer {
         private final Class<? extends Action> clazz;
-        private final String name;
+        private final String[] name;
         private final Function<String, Action> deserializer;
         private final Function<Action, String> serializer;
 
-        private ActionSerializer(Class<? extends Action> clazz, String name, Function<String, Action> deserializer, Function<Action, String> serializer) {
+        private ActionSerializer(Class<? extends Action> clazz, String[] name, Function<String, Action> deserializer, Function<Action, String> serializer) {
             this.clazz = clazz;
             this.name = name;
             this.deserializer = deserializer;

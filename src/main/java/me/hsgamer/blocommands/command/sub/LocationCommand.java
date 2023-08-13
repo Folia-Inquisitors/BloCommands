@@ -2,6 +2,7 @@ package me.hsgamer.blocommands.command.sub;
 
 import me.hsgamer.blocommands.BloCommands;
 import me.hsgamer.blocommands.api.block.BlockLocation;
+import me.hsgamer.hscore.bukkit.utils.MessageUtils;
 import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -18,10 +19,10 @@ public class LocationCommand extends BlockCommand {
         Block block = player.getTargetBlock(null, 10);
         if (block.getType().isBlock()) {
             blockLocation.setLocation(block.getLocation());
-            sender.sendMessage("§aThe location of the block has been set to the looking block");
+            MessageUtils.sendMessage(player, "&aThe location of the block has been set");
             return true;
         } else {
-            sender.sendMessage("§cYou are not looking at a block");
+            MessageUtils.sendMessage(player, "&cYou are not looking at a block");
             return false;
         }
     }

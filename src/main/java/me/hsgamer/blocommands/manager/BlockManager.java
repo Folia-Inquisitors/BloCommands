@@ -31,15 +31,13 @@ public class BlockManager {
 
     public void setup() {
         config.setup();
-        loadBlockByName(PathString.toPathMap(".", config.getNormalizedValues(BLOCKS_PATH, false)));
-        loadBlockByLocation();
+        loadBlocks();
     }
 
     public void reload() {
         clearBlocks();
         config.reload();
-        loadBlockByName(PathString.toPathMap(".", config.getNormalizedValues(BLOCKS_PATH, false)));
-        loadBlockByLocation();
+        loadBlocks();
     }
 
     public void save() {
@@ -50,6 +48,11 @@ public class BlockManager {
     public void clearBlocks() {
         byNameMap.clear();
         byLocationMap.clear();
+    }
+
+    private void loadBlocks() {
+        loadBlockByName(PathString.toPathMap(".", config.getNormalizedValues(BLOCKS_PATH, false)));
+        loadBlockByLocation();
     }
 
     private void loadBlockByName(Map<String, Object> map) {

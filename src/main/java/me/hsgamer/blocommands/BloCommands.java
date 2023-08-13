@@ -28,6 +28,7 @@ public final class BloCommands extends BasePlugin {
     @Override
     public void disable() {
         blockManager.save();
+        blockManager.clearBlocks();
     }
 
     public MainConfig getMainConfig() {

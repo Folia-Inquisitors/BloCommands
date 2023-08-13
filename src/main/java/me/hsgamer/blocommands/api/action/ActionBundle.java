@@ -15,8 +15,15 @@ public class ActionBundle {
         actions.add(action);
     }
 
-    public void removeAction(Action action) {
-        actions.remove(action);
+    public void addAction(List<Action> actions) {
+        this.actions.addAll(actions);
+    }
+
+    public boolean removeAction(int index) {
+        if (index < 0 || index > actions.size()) return false;
+
+        actions.remove(index);
+        return true;
     }
 
     public void clearActions() {

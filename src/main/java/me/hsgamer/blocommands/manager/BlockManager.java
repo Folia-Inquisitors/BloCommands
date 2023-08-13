@@ -41,7 +41,7 @@ public class BlockManager {
     }
 
     public void save() {
-        config.set(BLOCKS_PATH, saveBlockByName());
+        saveBlocks();
         config.save();
     }
 
@@ -53,6 +53,10 @@ public class BlockManager {
     private void loadBlocks() {
         loadBlockByName(PathString.toPathMap(".", config.getNormalizedValues(BLOCKS_PATH, false)));
         loadBlockByLocation();
+    }
+
+    private void saveBlocks() {
+        config.set(BLOCKS_PATH, saveBlockByName());
     }
 
     private void loadBlockByName(Map<String, Object> map) {

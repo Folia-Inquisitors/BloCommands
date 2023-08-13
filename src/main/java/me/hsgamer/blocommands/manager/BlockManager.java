@@ -125,7 +125,7 @@ public class BlockManager {
         return map;
     }
 
-    private void loadBlockByLocation() {
+    public void loadBlockByLocation() {
         byNameMap.values().forEach(blockLocation -> {
             Location location = blockLocation.getLocation();
             if (location != null) {
@@ -138,24 +138,21 @@ public class BlockManager {
         return Collections.unmodifiableCollection(byNameMap.values());
     }
 
-    public Optional<BlockLocation> getBlock(String name) {
-        return Optional.ofNullable(byNameMap.get(name));
+    public Optional<BlockLocation> getBlock(String id) {
+        return Optional.ofNullable(byNameMap.get(id));
     }
 
     public Optional<BlockLocation> getBlock(Location location) {
         return Optional.ofNullable(byLocationMap.get(location));
     }
 
-    public BlockLocation createBlock(String name, Location location) {
-        BlockLocation blockLocation = new BlockLocation(name);
-        blockLocation.setLocation(location);
-        byNameMap.put(name, blockLocation);
-        loadBlockByLocation();
-        return blockLocation;
+    public void createBlock(String id) {
+        BlockLocation blockLocation = new BlockLocation(id);
+        byNameMap.put(id, blockLocation);
     }
 
-    public void removeBlock(String name) {
-        byNameMap.remove(name);
+    public void removeBlock(String id) {
+        byNameMap.remove(id);
         loadBlockByLocation();
     }
 }

@@ -32,11 +32,11 @@ public class StatusCommand extends BlockCommand {
         } else {
             MessageUtils.sendMessage(sender, "&6Actions:");
             actionBundleMap.forEach((type, bundle) -> {
-                MessageUtils.sendMessage(sender, "&e- " + type.name());
+                MessageUtils.sendMessage(sender, "&f- &b" + type.name());
                 List<Action> actions = bundle.getActions();
                 List<String> actionsString = plugin.getActionManager().serialize(actions);
                 for (int i = 0; i < actionsString.size(); i++) {
-                    MessageUtils.sendMessage(sender, "&e  " + (i) + ". " + actionsString.get(i));
+                    MessageUtils.sendMessage(sender, "&c  " + (i) + ". &f" + actionsString.get(i));
                 }
             });
         }

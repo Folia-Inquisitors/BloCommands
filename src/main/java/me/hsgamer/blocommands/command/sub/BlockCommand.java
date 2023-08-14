@@ -58,6 +58,9 @@ public abstract class BlockCommand extends SubCommand {
 
     @Override
     public final @NotNull List<String> onTabComplete(@NotNull CommandSender sender, @NotNull String label, @NotNull String... args) {
+        if (args.length == 0) {
+            return Collections.emptyList();
+        }
         if (args.length == 1) {
             return plugin.getBlockManager().getBlocks().stream().map(BlockLocation::getId).collect(Collectors.toList());
         }

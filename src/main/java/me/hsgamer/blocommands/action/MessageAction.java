@@ -12,7 +12,7 @@ public class MessageAction extends CommandAction {
 
     @Override
     protected void execute(Player player, Location blockLocation, String parsedCommand, TaskProcess taskProcess) {
-        MessageUtils.sendMessage(player, parsedCommand);
+        MessageUtils.sendMessage(player, parsedCommand, "");
         taskProcess.next();
     }
 }

@@ -63,6 +63,9 @@ public abstract class ActionCommand extends BlockCommand {
 
     @Override
     protected final List<String> onTabComplete(@NotNull CommandSender sender, @NotNull BlockLocation blockLocation, @NotNull String label, @NotNull String... args) {
+        if (args.length == 0) {
+            return Collections.emptyList();
+        }
         if (args.length == 1) {
             return Arrays.stream(BlockInteractType.values()).map(Enum::name).collect(Collectors.toList());
         }

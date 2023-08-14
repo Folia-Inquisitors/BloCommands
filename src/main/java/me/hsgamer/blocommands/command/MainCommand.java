@@ -2,9 +2,7 @@ package me.hsgamer.blocommands.command;
 
 import me.hsgamer.blocommands.BloCommands;
 import me.hsgamer.blocommands.Permissions;
-import me.hsgamer.blocommands.command.sub.CreateCommand;
-import me.hsgamer.blocommands.command.sub.LocationCommand;
-import me.hsgamer.blocommands.command.sub.RemoveCommand;
+import me.hsgamer.blocommands.command.sub.*;
 import me.hsgamer.hscore.bukkit.command.sub.SubCommandManager;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -23,6 +21,11 @@ public class MainCommand extends Command {
         commandManager.registerSubcommand(new CreateCommand(plugin));
         commandManager.registerSubcommand(new RemoveCommand(plugin));
         commandManager.registerSubcommand(new LocationCommand(plugin));
+        commandManager.registerSubcommand(new AddActionCommand(plugin));
+        commandManager.registerSubcommand(new SetActionCommand(plugin));
+        commandManager.registerSubcommand(new RemoveActionCommand(plugin));
+        commandManager.registerSubcommand(new ClearActionCommand(plugin));
+        commandManager.registerSubcommand(new StatusCommand(plugin));
     }
 
     @Override

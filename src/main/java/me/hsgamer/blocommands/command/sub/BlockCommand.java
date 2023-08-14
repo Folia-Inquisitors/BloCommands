@@ -32,7 +32,7 @@ public abstract class BlockCommand extends SubCommand {
     }
 
     @Override
-    public void onSubCommand(@NotNull CommandSender sender, @NotNull String label, @NotNull String... args) {
+    public final void onSubCommand(@NotNull CommandSender sender, @NotNull String label, @NotNull String... args) {
         String id = args[0];
         Optional<BlockLocation> optional = plugin.getBlockManager().getBlock(id);
         if (!optional.isPresent()) {
@@ -47,7 +47,7 @@ public abstract class BlockCommand extends SubCommand {
     }
 
     @Override
-    public boolean isProperUsage(@NotNull CommandSender sender, @NotNull String label, @NotNull String... args) {
+    public final boolean isProperUsage(@NotNull CommandSender sender, @NotNull String label, @NotNull String... args) {
         if (args.length == 0) {
             return false;
         }
@@ -57,7 +57,7 @@ public abstract class BlockCommand extends SubCommand {
     }
 
     @Override
-    public @NotNull List<String> onTabComplete(@NotNull CommandSender sender, @NotNull String label, @NotNull String... args) {
+    public final @NotNull List<String> onTabComplete(@NotNull CommandSender sender, @NotNull String label, @NotNull String... args) {
         if (args.length == 1) {
             return plugin.getBlockManager().getBlocks().stream().map(BlockLocation::getId).collect(Collectors.toList());
         }

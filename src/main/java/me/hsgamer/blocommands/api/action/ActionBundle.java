@@ -26,6 +26,13 @@ public class ActionBundle {
         return true;
     }
 
+    public boolean setAction(int index, Action action) {
+        if (index < 0 || index > actions.size()) return false;
+
+        actions.set(index, action);
+        return true;
+    }
+
     public void clearActions() {
         actions.clear();
     }

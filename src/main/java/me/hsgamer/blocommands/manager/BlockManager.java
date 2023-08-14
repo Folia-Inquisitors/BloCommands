@@ -10,9 +10,11 @@ import me.hsgamer.hscore.common.CollectionUtils;
 import me.hsgamer.hscore.config.Config;
 import me.hsgamer.hscore.config.PathString;
 import org.bukkit.Location;
+import org.bukkit.World;
 
 import java.util.*;
 import java.util.logging.Level;
+import java.util.stream.Collectors;
 
 public class BlockManager {
     private static final PathString BLOCKS_PATH = new PathString("blocks");
@@ -138,6 +140,15 @@ public class BlockManager {
         return Collections.unmodifiableCollection(byNameMap.values());
     }
 
+    public Collection<BlockLocation> getBlocks(World world) {
+        return byNameMap.values().stream()
+                .filter(blockLocation -> {
+                    Location location = blockLocation.getLocation();
+                    return location != null && Objects.equals(location.getWorld(), world);
+                })
+                .collect(Collectors.toList());
+    }
+
     public Optional<BlockLocation> getBlock(String id) {
         return Optional.ofNullable(byNameMap.get(id));
     }
@@ -153,6 +164,13 @@ public class BlockManager {
 
     public void removeBlock(String id) {
         byNameMap.remove(id);
+        loadBlockByLocation();
+    }
+
+    public void removeBlocks(World world) {
+        for (BlockLocation blockLocation : getBlocks(world)) {
+            byNameMap.remove(blockLocation.getId());
+        }
         loadBlockByLocation();
     }
 }

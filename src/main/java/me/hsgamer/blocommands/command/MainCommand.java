@@ -27,6 +27,8 @@ public class MainCommand extends Command {
         commandManager.registerSubcommand(new ClearActionCommand(plugin));
         commandManager.registerSubcommand(new StatusCommand(plugin));
         commandManager.registerSubcommand(new CheckCommand(plugin));
+        commandManager.registerSubcommand(new CheckWorldCommand(plugin));
+        commandManager.registerSubcommand(new PurgeWorldCommand(plugin));
     }
 
     @Override

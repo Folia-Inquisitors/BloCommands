@@ -46,6 +46,10 @@
                                     <pattern>me.hsgamer.hscore</pattern>
                                     <shadedPattern>me.hsgamer.blocommands.core</shadedPattern>
                                 </relocation>
+                                <relocation>
+                                    <pattern>fr.skytasul.glowingentities</pattern>
+                                    <shadedPattern>me.hsgamer.blocommands.glowingentities</shadedPattern>
+                                </relocation>
                             </relocations>
                         </configuration>
                     </execution>
@@ -103,6 +107,12 @@
             <groupId>me.hsgamer</groupId>
             <artifactId>hscore-task</artifactId>
             <version>${core.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>io.github.skytasul</groupId>
+            <artifactId>glowingentities</artifactId>
+            <version>1.3</version>
         </dependency>
 
         <dependency>

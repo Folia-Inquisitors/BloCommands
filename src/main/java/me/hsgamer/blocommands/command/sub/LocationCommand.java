@@ -1,7 +1,7 @@
 package me.hsgamer.blocommands.command.sub;
 
 import me.hsgamer.blocommands.BloCommands;
-import me.hsgamer.blocommands.api.block.BlockLocation;
+import me.hsgamer.blocommands.api.block.ActionBlock;
 import me.hsgamer.hscore.bukkit.utils.MessageUtils;
 import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
@@ -14,11 +14,11 @@ public class LocationCommand extends BlockCommand {
     }
 
     @Override
-    protected boolean onSubCommand(@NotNull CommandSender sender, @NotNull BlockLocation blockLocation, @NotNull String label, @NotNull String... args) {
+    protected boolean onSubCommand(@NotNull CommandSender sender, @NotNull ActionBlock actionBlock, @NotNull String label, @NotNull String... args) {
         Player player = (Player) sender;
         Block block = player.getTargetBlock(null, 10);
         if (block.getType().isBlock()) {
-            blockLocation.setLocation(block.getLocation());
+            actionBlock.setLocation(block.getLocation());
             MessageUtils.sendMessage(player, "&aThe location of the block has been set");
             return true;
         } else {

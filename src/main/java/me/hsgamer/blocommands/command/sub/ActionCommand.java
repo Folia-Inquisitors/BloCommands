@@ -3,8 +3,8 @@ package me.hsgamer.blocommands.command.sub;
 import me.hsgamer.blocommands.BloCommands;
 import me.hsgamer.blocommands.api.action.Action;
 import me.hsgamer.blocommands.api.action.ActionBundle;
+import me.hsgamer.blocommands.api.block.ActionBlock;
 import me.hsgamer.blocommands.api.block.BlockInteractType;
-import me.hsgamer.blocommands.api.block.BlockLocation;
 import me.hsgamer.hscore.bukkit.utils.MessageUtils;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
@@ -31,7 +31,7 @@ public abstract class ActionCommand extends BlockCommand {
     }
 
     @Override
-    protected final boolean onSubCommand(@NotNull CommandSender sender, @NotNull BlockLocation blockLocation, @NotNull String label, @NotNull String... args) {
+    protected final boolean onSubCommand(@NotNull CommandSender sender, @NotNull ActionBlock actionBlock, @NotNull String label, @NotNull String... args) {
         if (args.length == 0) {
             return false;
         }
@@ -42,12 +42,12 @@ public abstract class ActionCommand extends BlockCommand {
             MessageUtils.sendMessage(sender, "&cInvalid type");
             return false;
         }
-        ActionBundle actionBundle = blockLocation.getActionBundle(type);
+        ActionBundle actionBundle = actionBlock.getActionBundle(type);
         return onSubCommand(sender, actionBundle, label, Arrays.copyOfRange(args, 1, args.length));
     }
 
     @Override
-    protected final boolean isProperUsage(@NotNull CommandSender sender, @NotNull BlockLocation blockLocation, @NotNull String label, @NotNull String... args) {
+    protected final boolean isProperUsage(@NotNull CommandSender sender, @NotNull ActionBlock actionBlock, @NotNull String label, @NotNull String... args) {
         if (args.length == 0) {
             return false;
         }
@@ -57,12 +57,12 @@ public abstract class ActionCommand extends BlockCommand {
         } catch (IllegalArgumentException e) {
             return true;
         }
-        ActionBundle actionBundle = blockLocation.getActionBundle(type);
+        ActionBundle actionBundle = actionBlock.getActionBundle(type);
         return isProperUsage(sender, actionBundle, label, Arrays.copyOfRange(args, 1, args.length));
     }
 
     @Override
-    protected final List<String> onTabComplete(@NotNull CommandSender sender, @NotNull BlockLocation blockLocation, @NotNull String label, @NotNull String... args) {
+    protected final List<String> onTabComplete(@NotNull CommandSender sender, @NotNull ActionBlock actionBlock, @NotNull String label, @NotNull String... args) {
         if (args.length == 0) {
             return Collections.emptyList();
         }
@@ -75,7 +75,7 @@ public abstract class ActionCommand extends BlockCommand {
         } catch (IllegalArgumentException e) {
             return Collections.emptyList();
         }
-        ActionBundle actionBundle = blockLocation.getActionBundle(type);
+        ActionBundle actionBundle = actionBlock.getActionBundle(type);
         return onTabComplete(sender, actionBundle, label, Arrays.copyOfRange(args, 1, args.length));
     }
 

@@ -10,12 +10,12 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-public class BlockLocation {
+public class ActionBlock {
     private final String id;
     private final Map<BlockInteractType, ActionBundle> actionBundleMap = new HashMap<>();
     private Location location;
 
-    public BlockLocation(String id) {
+    public ActionBlock(String id) {
         this.id = id;
     }
 

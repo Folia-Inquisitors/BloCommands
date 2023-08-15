@@ -3,8 +3,8 @@ package me.hsgamer.blocommands.manager;
 import me.hsgamer.blocommands.BloCommands;
 import me.hsgamer.blocommands.api.action.Action;
 import me.hsgamer.blocommands.api.action.ActionBundle;
+import me.hsgamer.blocommands.api.block.ActionBlock;
 import me.hsgamer.blocommands.api.block.BlockInteractType;
-import me.hsgamer.blocommands.api.block.BlockLocation;
 import me.hsgamer.hscore.bukkit.config.BukkitConfig;
 import me.hsgamer.hscore.common.CollectionUtils;
 import me.hsgamer.hscore.config.Config;
@@ -23,8 +23,8 @@ public class BlockManager {
 
     private final Config config;
     private final BloCommands plugin;
-    private final Map<String, BlockLocation> byNameMap = new HashMap<>();
-    private final Map<Location, BlockLocation> byLocationMap = new HashMap<>();
+    private final Map<String, ActionBlock> byNameMap = new HashMap<>();
+    private final Map<Location, ActionBlock> byLocationMap = new HashMap<>();
 
     public BlockManager(BloCommands plugin) {
         this.config = new BukkitConfig(plugin, "blocks.yml");
@@ -67,13 +67,13 @@ public class BlockManager {
             Object rawValue = entry.getValue();
             if (rawValue instanceof Map) {
                 Map<?, ?> settings = (Map<?, ?>) rawValue;
-                BlockLocation blockLocation = new BlockLocation(id);
+                ActionBlock actionBlock = new ActionBlock(id);
 
                 try {
                     //noinspection unchecked
                     Map<String, Object> locationMap = (Map<String, Object>) settings.get(LOCATION_PATH);
                     Location location = Location.deserialize(locationMap);
-                    blockLocation.setLocation(location);
+                    actionBlock.setLocation(location);
                 } catch (Exception e) {
                     plugin.getLogger().log(Level.WARNING, "Error when loading location for " + id, e);
                 }
@@ -95,11 +95,11 @@ public class BlockManager {
 
                         List<String> stringActionList = CollectionUtils.createStringListFromObject(rawActionList);
                         List<Action> actionList = plugin.getActionManager().deserialize(stringActionList);
-                        blockLocation.getActionBundle(interactType).addAction(actionList);
+                        actionBlock.getActionBundle(interactType).addAction(actionList);
                     }
                 }
 
-                byNameMap.put(id, blockLocation);
+                byNameMap.put(id, actionBlock);
             }
         }
     }
@@ -107,13 +107,13 @@ public class BlockManager {
     private Map<String, Object> saveBlockByName() {
         Map<String, Object> map = new LinkedHashMap<>();
 
-        for (BlockLocation blockLocation : byNameMap.values()) {
+        for (ActionBlock actionBlock : byNameMap.values()) {
             Map<String, Object> settings = new LinkedHashMap<>();
 
-            settings.put(LOCATION_PATH, Optional.ofNullable(blockLocation.getLocation()).map(Location::serialize).orElse(null));
+            settings.put(LOCATION_PATH, Optional.ofNullable(actionBlock.getLocation()).map(Location::serialize).orElse(null));
 
             Map<String, Object> actionMap = new LinkedHashMap<>();
-            for (Map.Entry<BlockInteractType, ActionBundle> actionEntry : blockLocation.getActionBundleMap().entrySet()) {
+            for (Map.Entry<BlockInteractType, ActionBundle> actionEntry : actionBlock.getActionBundleMap().entrySet()) {
                 List<Action> actionList = actionEntry.getValue().getActions();
                 if (actionList.isEmpty()) continue;
 
@@ -121,46 +121,46 @@ public class BlockManager {
             }
             settings.put(ACTION_PATH, actionMap);
 
-            map.put(blockLocation.getId(), settings);
+            map.put(actionBlock.getId(), settings);
         }
 
         return map;
     }
 
     public void loadBlockByLocation() {
-        byNameMap.values().forEach(blockLocation -> {
-            Location location = blockLocation.getLocation();
+        byNameMap.values().forEach(actionBlock -> {
+            Location location = actionBlock.getLocation();
             if (location != null) {
-                byLocationMap.put(location, blockLocation);
+                byLocationMap.put(location, actionBlock);
             }
         });
     }
 
-    public Collection<BlockLocation> getBlocks() {
+    public Collection<ActionBlock> getBlocks() {
         return Collections.unmodifiableCollection(byNameMap.values());
     }
 
-    public Collection<BlockLocation> getBlocks(World world) {
+    public Collection<ActionBlock> getBlocks(World world) {
         return byNameMap.values().stream()
-                .filter(blockLocation -> {
-                    Location location = blockLocation.getLocation();
+                .filter(actionBlock -> {
+                    Location location = actionBlock.getLocation();
                     return location != null && Objects.equals(location.getWorld(), world);
                 })
                 .collect(Collectors.toList());
     }
 
-    public Optional<BlockLocation> getBlock(String id) {
+    public Optional<ActionBlock> getBlock(String id) {
         return Optional.ofNullable(byNameMap.get(id));
     }
 
-    public Optional<BlockLocation> getBlock(Location location) {
+    public Optional<ActionBlock> getBlock(Location location) {
         return Optional.ofNullable(byLocationMap.get(location));
     }
 
-    public BlockLocation createBlock(String id) {
-        BlockLocation blockLocation = new BlockLocation(id);
-        byNameMap.put(id, blockLocation);
-        return blockLocation;
+    public ActionBlock createBlock(String id) {
+        ActionBlock actionBlock = new ActionBlock(id);
+        byNameMap.put(id, actionBlock);
+        return actionBlock;
     }
 
     public void removeBlock(String id) {
@@ -169,8 +169,8 @@ public class BlockManager {
     }
 
     public void removeBlocks(World world) {
-        for (BlockLocation blockLocation : getBlocks(world)) {
-            byNameMap.remove(blockLocation.getId());
+        for (ActionBlock actionBlock : getBlocks(world)) {
+            byNameMap.remove(actionBlock.getId());
         }
         loadBlockByLocation();
     }

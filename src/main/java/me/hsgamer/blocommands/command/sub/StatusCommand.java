@@ -3,8 +3,8 @@ package me.hsgamer.blocommands.command.sub;
 import me.hsgamer.blocommands.BloCommands;
 import me.hsgamer.blocommands.api.action.Action;
 import me.hsgamer.blocommands.api.action.ActionBundle;
+import me.hsgamer.blocommands.api.block.ActionBlock;
 import me.hsgamer.blocommands.api.block.BlockInteractType;
-import me.hsgamer.blocommands.api.block.BlockLocation;
 import me.hsgamer.hscore.bukkit.utils.MessageUtils;
 import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
@@ -19,14 +19,14 @@ public class StatusCommand extends BlockCommand {
     }
 
     @Override
-    protected boolean onSubCommand(@NotNull CommandSender sender, @NotNull BlockLocation blockLocation, @NotNull String label, @NotNull String... args) {
-        Location location = blockLocation.getLocation();
+    protected boolean onSubCommand(@NotNull CommandSender sender, @NotNull ActionBlock actionBlock, @NotNull String label, @NotNull String... args) {
+        Location location = actionBlock.getLocation();
         MessageUtils.sendMessage(sender, "&6Location: &f" + (
                 location == null
                         ? "null"
                         : location.getWorld().getName() + " " + location.getBlockX() + " " + location.getBlockY() + " " + location.getBlockZ()
         ));
-        Map<BlockInteractType, ActionBundle> actionBundleMap = blockLocation.getActionBundleMap();
+        Map<BlockInteractType, ActionBundle> actionBundleMap = actionBlock.getActionBundleMap();
         if (actionBundleMap.isEmpty()) {
             MessageUtils.sendMessage(sender, "&6No action");
         } else {

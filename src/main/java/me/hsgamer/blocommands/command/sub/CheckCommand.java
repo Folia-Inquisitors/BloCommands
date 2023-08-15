@@ -1,7 +1,7 @@
 package me.hsgamer.blocommands.command.sub;
 
 import me.hsgamer.blocommands.BloCommands;
-import me.hsgamer.blocommands.api.block.BlockLocation;
+import me.hsgamer.blocommands.api.block.ActionBlock;
 import me.hsgamer.hscore.bukkit.command.sub.SubCommand;
 import me.hsgamer.hscore.bukkit.utils.MessageUtils;
 import org.bukkit.block.Block;
@@ -23,10 +23,10 @@ public class CheckCommand extends SubCommand {
     public void onSubCommand(@NotNull CommandSender sender, @NotNull String label, @NotNull String... args) {
         Player player = (Player) sender;
         Block block = player.getTargetBlock(null, 10);
-        Optional<BlockLocation> optional = plugin.getBlockManager().getBlock(block.getLocation());
+        Optional<ActionBlock> optional = plugin.getBlockManager().getBlock(block.getLocation());
         if (optional.isPresent()) {
-            BlockLocation blockLocation = optional.get();
-            MessageUtils.sendMessage(sender, "&aThe block is registered as &e" + blockLocation.getId());
+            ActionBlock actionBlock = optional.get();
+            MessageUtils.sendMessage(sender, "&aThe block is registered as &e" + actionBlock.getId());
         } else {
             MessageUtils.sendMessage(sender, "&cThe block is not registered");
         }

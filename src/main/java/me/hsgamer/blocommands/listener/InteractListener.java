@@ -1,8 +1,8 @@
 package me.hsgamer.blocommands.listener;
 
 import me.hsgamer.blocommands.BloCommands;
+import me.hsgamer.blocommands.api.block.ActionBlock;
 import me.hsgamer.blocommands.api.block.BlockInteractType;
-import me.hsgamer.blocommands.api.block.BlockLocation;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -28,19 +28,19 @@ public class InteractListener implements Listener {
         Player player = event.getPlayer();
         Location location = block.getLocation();
 
-        Optional<BlockLocation> optional = plugin.getBlockManager().getBlock(location);
+        Optional<ActionBlock> optional = plugin.getBlockManager().getBlock(location);
         if (!optional.isPresent()) return;
-        BlockLocation blockLocation = optional.get();
+        ActionBlock actionBlock = optional.get();
 
         Action action = event.getAction();
         if (action == Action.PHYSICAL) {
-            blockLocation.execute(player, BlockInteractType.PHYSICAL);
+            actionBlock.execute(player, BlockInteractType.PHYSICAL);
         } else if (action == Action.RIGHT_CLICK_BLOCK) {
             event.setCancelled(true);
-            blockLocation.execute(player, BlockInteractType.RIGHT_CLICK);
+            actionBlock.execute(player, BlockInteractType.RIGHT_CLICK);
         } else if (action == Action.LEFT_CLICK_BLOCK) {
             event.setCancelled(true);
-            blockLocation.execute(player, BlockInteractType.LEFT_CLICK);
+            actionBlock.execute(player, BlockInteractType.LEFT_CLICK);
         }
     }
 }

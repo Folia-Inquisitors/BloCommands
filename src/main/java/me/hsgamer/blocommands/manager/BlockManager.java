@@ -157,9 +157,10 @@ public class BlockManager {
         return Optional.ofNullable(byLocationMap.get(location));
     }
 
-    public void createBlock(String id) {
+    public BlockLocation createBlock(String id) {
         BlockLocation blockLocation = new BlockLocation(id);
         byNameMap.put(id, blockLocation);
+        return blockLocation;
     }
 
     public void removeBlock(String id) {

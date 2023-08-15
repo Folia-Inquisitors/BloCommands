@@ -25,6 +25,7 @@ public class BlockManager {
     private final BloCommands plugin;
     private final Map<String, ActionBlock> byNameMap = new HashMap<>();
     private final Map<Location, ActionBlock> byLocationMap = new HashMap<>();
+    private long lastLocationUpdate = 0L;
 
     public BlockManager(BloCommands plugin) {
         this.config = new BukkitConfig(plugin, "blocks.yml");
@@ -128,16 +129,26 @@ public class BlockManager {
     }
 
     public void loadBlockByLocation() {
+        byLocationMap.clear();
         byNameMap.values().forEach(actionBlock -> {
             Location location = actionBlock.getLocation();
             if (location != null) {
                 byLocationMap.put(location, actionBlock);
             }
         });
+        lastLocationUpdate = System.currentTimeMillis();
     }
 
     public Collection<ActionBlock> getBlocks() {
         return Collections.unmodifiableCollection(byNameMap.values());
+    }
+
+    public Map<Location, ActionBlock> getBlocksByLocation() {
+        return Collections.unmodifiableMap(byLocationMap);
+    }
+
+    public long getLastLocationUpdate() {
+        return lastLocationUpdate;
     }
 
     public Collection<ActionBlock> getBlocks(World world) {

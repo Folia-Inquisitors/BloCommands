@@ -28,11 +28,13 @@ public class CreateCommand extends SubCommand {
                 if (block.getType().isBlock()) {
                     actionBlock.setLocation(block.getLocation());
                     plugin.getBlockManager().loadBlockByLocation();
-                    MessageUtils.sendMessage(sender, "&aThe block is created at your target block");
                 }
             }
             plugin.getBlockManager().save();
             MessageUtils.sendMessage(sender, "&aThe block is created");
+            if (actionBlock.getLocation() == null) {
+                MessageUtils.sendMessage(sender, "&eThe location of the block is not set yet");
+            }
         }
     }
 

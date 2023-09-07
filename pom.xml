@@ -73,6 +73,10 @@
             <id>sonatype</id>
             <url>https://oss.sonatype.org/content/groups/public/</url>
         </repository>
+        <repository>
+            <id>jitpack.io</id>
+            <url>https://jitpack.io</url>
+        </repository>
     </repositories>
 
     <dependencies>
@@ -110,9 +114,9 @@
         </dependency>
 
         <dependency>
-            <groupId>io.github.skytasul</groupId>
-            <artifactId>glowingentities</artifactId>
-            <version>1.3</version>
+            <groupId>com.github.SkytAsul</groupId>
+            <artifactId>GlowingEntities</artifactId>
+            <version>f4d6b1f0f1</version>
         </dependency>
 
         <dependency>

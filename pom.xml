@@ -6,7 +6,7 @@
 
     <groupId>me.hsgamer</groupId>
     <artifactId>BloCommands</artifactId>
-    <version>1.0</version>
+    <version>1.1</version>
     <packaging>jar</packaging>
 
     <name>BloCommands</name>
@@ -14,7 +14,7 @@
     <properties>
         <java.version>1.8</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <core.version>4.3.13</core.version>
+        <core.version>4.3.17</core.version>
     </properties>
 
     <build>

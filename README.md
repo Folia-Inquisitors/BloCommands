@@ -12,10 +12,6 @@ mvn clean install
 
 Simple executable command plugin. It is highly optimized and heavily tested. Feel free to constribute.
 
-# Unofficial Discord 
-
-https://discord.gg/aT9z7q7hX8
-
 ## Commands
 ```
 /bloc checkworld <world>

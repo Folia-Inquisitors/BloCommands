@@ -20,14 +20,14 @@ public class ActionBundle {
     }
 
     public boolean removeAction(int index) {
-        if (index < 0 || index > actions.size()) return false;
+        if (index < 0 || index >= actions.size()) return false;
 
         actions.remove(index);
         return true;
     }
 
     public boolean setAction(int index, Action action) {
-        if (index < 0 || index > actions.size()) return false;
+        if (index < 0 || index >= actions.size()) return false;
 
         actions.set(index, action);
         return true;

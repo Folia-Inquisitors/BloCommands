@@ -2,6 +2,7 @@ package me.hsgamer.blocommands.command.sub;
 
 import me.hsgamer.blocommands.BloCommands;
 import me.hsgamer.blocommands.api.block.ActionBlock;
+import me.hsgamer.blocommands.manager.BlockManager;
 import me.hsgamer.hscore.bukkit.command.sub.SubCommand;
 import me.hsgamer.hscore.bukkit.utils.MessageUtils;
 import org.bukkit.Bukkit;
@@ -28,7 +29,7 @@ public class CheckWorldCommand extends SubCommand {
             MessageUtils.sendMessage(sender, "&cThe world is not found");
             return;
         }
-        Collection<ActionBlock> actionBlocks = plugin.getBlockManager().getBlocks(world);
+        Collection<ActionBlock> actionBlocks = plugin.get(BlockManager.class).getBlocks(world);
         if (actionBlocks.isEmpty()) {
             MessageUtils.sendMessage(sender, "&cThere is no block in the world");
         } else {

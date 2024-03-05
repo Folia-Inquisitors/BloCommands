@@ -1,12 +1,14 @@
 package me.hsgamer.blocommands;
 
+import io.github.projectunified.minelib.plugin.base.BasePlugin;
+import io.github.projectunified.minelib.plugin.permission.PermissionComponent;
 import org.bukkit.permissions.Permission;
 import org.bukkit.permissions.PermissionDefault;
 
-public class Permissions {
+public class Permissions extends PermissionComponent {
     public static final Permission ADMIN = new Permission("blocommands.admin", PermissionDefault.OP);
 
-    private Permissions() {
-        // EMPTY
+    public Permissions(BasePlugin plugin) {
+        super(plugin);
     }
 }

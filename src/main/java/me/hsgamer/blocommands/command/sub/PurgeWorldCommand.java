@@ -1,6 +1,7 @@
 package me.hsgamer.blocommands.command.sub;
 
 import me.hsgamer.blocommands.BloCommands;
+import me.hsgamer.blocommands.manager.BlockManager;
 import me.hsgamer.hscore.bukkit.command.sub.SubCommand;
 import me.hsgamer.hscore.bukkit.utils.MessageUtils;
 import org.bukkit.Bukkit;
@@ -26,7 +27,7 @@ public class PurgeWorldCommand extends SubCommand {
             MessageUtils.sendMessage(sender, "&cThe world is not found");
             return;
         }
-        plugin.getBlockManager().removeBlocks(world);
+        plugin.get(BlockManager.class).removeBlocks(world);
         MessageUtils.sendMessage(sender, "&aRemoved all blocks in the world");
     }
 

@@ -5,6 +5,7 @@ import me.hsgamer.blocommands.api.action.Action;
 import me.hsgamer.blocommands.api.action.ActionBundle;
 import me.hsgamer.blocommands.api.block.ActionBlock;
 import me.hsgamer.blocommands.api.block.BlockInteractType;
+import me.hsgamer.blocommands.manager.ActionManager;
 import me.hsgamer.hscore.bukkit.utils.MessageUtils;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
@@ -81,7 +82,7 @@ public abstract class ActionCommand extends BlockCommand {
 
     protected final Optional<Action> tryParseAction(CommandSender sender, @NotNull String... args) {
         String actionString = String.join(" ", args);
-        Optional<Action> optional = plugin.getActionManager().deserialize(actionString);
+        Optional<Action> optional = plugin.get(ActionManager.class).deserialize(actionString);
         if (!optional.isPresent()) {
             MessageUtils.sendMessage(sender, "&cThe action is invalid");
         }

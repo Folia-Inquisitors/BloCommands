@@ -2,6 +2,7 @@ package me.hsgamer.blocommands.command.sub;
 
 import me.hsgamer.blocommands.BloCommands;
 import me.hsgamer.blocommands.api.block.ActionBlock;
+import me.hsgamer.blocommands.manager.BlockManager;
 import me.hsgamer.hscore.bukkit.command.sub.SubCommand;
 import me.hsgamer.hscore.bukkit.utils.MessageUtils;
 import org.bukkit.command.CommandSender;
@@ -34,15 +35,15 @@ public abstract class BlockCommand extends SubCommand {
     @Override
     public final void onSubCommand(@NotNull CommandSender sender, @NotNull String label, @NotNull String... args) {
         String id = args[0];
-        Optional<ActionBlock> optional = plugin.getBlockManager().getBlock(id);
+        Optional<ActionBlock> optional = plugin.get(BlockManager.class).getBlock(id);
         if (!optional.isPresent()) {
             MessageUtils.sendMessage(sender, "&cThe block is not found");
             return;
         }
         ActionBlock actionBlock = optional.get();
         if (onSubCommand(sender, actionBlock, label, Arrays.copyOfRange(args, 1, args.length))) {
-            plugin.getBlockManager().save();
-            plugin.getBlockManager().loadBlockByLocation();
+            plugin.get(BlockManager.class).save();
+            plugin.get(BlockManager.class).loadBlockByLocation();
         }
     }
 
@@ -52,7 +53,7 @@ public abstract class BlockCommand extends SubCommand {
             return false;
         }
         String id = args[0];
-        Optional<ActionBlock> optional = plugin.getBlockManager().getBlock(id);
+        Optional<ActionBlock> optional = plugin.get(BlockManager.class).getBlock(id);
         return optional.map(location -> isProperUsage(sender, location, label, Arrays.copyOfRange(args, 1, args.length))).orElse(true);
     }
 
@@ -62,10 +63,10 @@ public abstract class BlockCommand extends SubCommand {
             return Collections.emptyList();
         }
         if (args.length == 1) {
-            return plugin.getBlockManager().getBlocks().stream().map(ActionBlock::getId).collect(Collectors.toList());
+            return plugin.get(BlockManager.class).getBlocks().stream().map(ActionBlock::getId).collect(Collectors.toList());
         }
         String id = args[0];
-        Optional<ActionBlock> optional = plugin.getBlockManager().getBlock(id);
+        Optional<ActionBlock> optional = plugin.get(BlockManager.class).getBlock(id);
         return optional.map(location -> onTabComplete(sender, location, label, Arrays.copyOfRange(args, 1, args.length))).orElse(Collections.emptyList());
     }
 }

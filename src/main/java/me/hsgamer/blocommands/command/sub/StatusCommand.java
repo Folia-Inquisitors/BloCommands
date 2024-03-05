@@ -5,6 +5,7 @@ import me.hsgamer.blocommands.api.action.Action;
 import me.hsgamer.blocommands.api.action.ActionBundle;
 import me.hsgamer.blocommands.api.block.ActionBlock;
 import me.hsgamer.blocommands.api.block.BlockInteractType;
+import me.hsgamer.blocommands.manager.ActionManager;
 import me.hsgamer.hscore.bukkit.utils.MessageUtils;
 import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
@@ -34,7 +35,7 @@ public class StatusCommand extends BlockCommand {
             actionBundleMap.forEach((type, bundle) -> {
                 MessageUtils.sendMessage(sender, "&f- &b" + type.name());
                 List<Action> actions = bundle.getActions();
-                List<String> actionsString = plugin.getActionManager().serialize(actions);
+                List<String> actionsString = plugin.get(ActionManager.class).serialize(actions);
                 for (int i = 0; i < actionsString.size(); i++) {
                     MessageUtils.sendMessage(sender, "&c  " + (i) + ". &f" + actionsString.get(i));
                 }

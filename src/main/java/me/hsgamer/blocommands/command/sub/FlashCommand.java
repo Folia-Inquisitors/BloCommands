@@ -19,7 +19,7 @@ public class FlashCommand extends SubCommand {
     @Override
     public void onSubCommand(@NotNull CommandSender sender, @NotNull String label, @NotNull String... args) {
         Player player = (Player) sender;
-        FlashManager flashManager = plugin.getFlashManager();
+        FlashManager flashManager = plugin.get(FlashManager.class);
         if (flashManager.isFlashing(player)) {
             flashManager.stop(player);
             MessageUtils.sendMessage(player, "&aFlash stopped");

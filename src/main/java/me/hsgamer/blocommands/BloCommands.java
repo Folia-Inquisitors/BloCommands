@@ -1,60 +1,42 @@
 package me.hsgamer.blocommands;
 
+import io.github.projectunified.minelib.plugin.base.BasePlugin;
+import io.github.projectunified.minelib.plugin.command.CommandComponent;
+import io.github.projectunified.minelib.plugin.postenable.PostEnableComponent;
 import me.hsgamer.blocommands.command.MainCommand;
 import me.hsgamer.blocommands.listener.InteractListener;
 import me.hsgamer.blocommands.manager.ActionManager;
 import me.hsgamer.blocommands.manager.BlockManager;
 import me.hsgamer.blocommands.manager.FlashManager;
-import me.hsgamer.hscore.bukkit.baseplugin.BasePlugin;
 import me.hsgamer.hscore.bukkit.utils.MessageUtils;
+import org.bukkit.command.Command;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
 public final class BloCommands extends BasePlugin {
-    private final ActionManager actionManager = new ActionManager();
-    private final BlockManager blockManager = new BlockManager(this);
-    private final FlashManager flashManager = new FlashManager(this);
+    @Override
+    protected List<Object> getComponents() {
+        return Arrays.asList(
+                new Permissions(this),
+                new PostEnableComponent(this),
+
+                new ActionManager(),
+                new BlockManager(this),
+                new FlashManager(this),
+
+                new CommandComponent(this, this::getCommands),
+                new InteractListener(this)
+        );
+    }
 
     @Override
-    public void preLoad() {
+    public void load() {
         MessageUtils.setPrefix("&8[&eBloCommands&8] ");
     }
 
-    @Override
-    public void enable() {
-        registerListener(new InteractListener(this));
-        flashManager.setup();
-
-        registerCommand(new MainCommand(this));
-    }
-
-    @Override
-    public void postEnable() {
-        blockManager.setup();
-    }
-
-    @Override
-    public void disable() {
-        flashManager.clear();
-        blockManager.save();
-        blockManager.clearBlocks();
-    }
-
-    @Override
-    protected List<Class<?>> getPermissionClasses() {
-        return Collections.singletonList(Permissions.class);
-    }
-
-    public ActionManager getActionManager() {
-        return actionManager;
-    }
-
-    public BlockManager getBlockManager() {
-        return blockManager;
-    }
-
-    public FlashManager getFlashManager() {
-        return flashManager;
+    private List<Command> getCommands() {
+        return Collections.singletonList(new MainCommand(this));
     }
 }

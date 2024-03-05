@@ -1,9 +1,10 @@
 package me.hsgamer.blocommands.manager;
 
 import fr.skytasul.glowingentities.GlowingBlocks;
+import io.github.projectunified.minelib.plugin.base.Loadable;
+import io.github.projectunified.minelib.scheduler.common.task.Task;
+import io.github.projectunified.minelib.scheduler.entity.EntityScheduler;
 import me.hsgamer.blocommands.BloCommands;
-import me.hsgamer.hscore.bukkit.scheduler.Scheduler;
-import me.hsgamer.hscore.bukkit.scheduler.Task;
 import me.hsgamer.hscore.bukkit.utils.VersionUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -12,7 +13,7 @@ import org.bukkit.entity.Player;
 import java.util.*;
 import java.util.function.BooleanSupplier;
 
-public class FlashManager {
+public class FlashManager implements Loadable {
     private final BloCommands plugin;
     private final Map<UUID, FlashTask> taskMap = new HashMap<>();
     private GlowingBlocks glowingBlocks;
@@ -21,13 +22,15 @@ public class FlashManager {
         this.plugin = plugin;
     }
 
-    public void setup() {
+    @Override
+    public void enable() {
         if (VersionUtils.isAtLeast(17)) {
             glowingBlocks = new GlowingBlocks(plugin);
         }
     }
 
-    public void clear() {
+    @Override
+    public void disable() {
         taskMap.values().forEach(FlashTask::cancel);
         taskMap.clear();
     }
@@ -76,7 +79,7 @@ public class FlashManager {
                 return false;
             }
 
-            if (plugin.getBlockManager().getLastLocationUpdate() > lastLocationUpdate) {
+            if (plugin.get(BlockManager.class).getLastLocationUpdate() > lastLocationUpdate) {
                 locations.forEach(location -> {
                     try {
                         glowingBlocks.unsetGlowing(location, player);
@@ -85,8 +88,8 @@ public class FlashManager {
                     }
                 });
                 locations.clear();
-                locations.addAll(plugin.getBlockManager().getBlocksByLocation().keySet());
-                lastLocationUpdate = plugin.getBlockManager().getLastLocationUpdate();
+                locations.addAll(plugin.get(BlockManager.class).getBlocksByLocation().keySet());
+                lastLocationUpdate = plugin.get(BlockManager.class).getLastLocationUpdate();
 
                 locations.forEach(location -> {
                     try {
@@ -109,7 +112,7 @@ public class FlashManager {
         private FlashTask(Player player) {
             this.player = player;
             this.flashRunnable = new FlashRunnable(player);
-            this.task = Scheduler.current().async().runEntityTaskTimer(player, flashRunnable, 0, 0);
+            this.task = EntityScheduler.get(plugin, player).runTimer(flashRunnable, 0, 0);
         }
 
         public void cancel() {

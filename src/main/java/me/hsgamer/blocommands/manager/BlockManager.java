@@ -1,5 +1,7 @@
 package me.hsgamer.blocommands.manager;
 
+import io.github.projectunified.minelib.plugin.base.Loadable;
+import io.github.projectunified.minelib.plugin.postenable.PostEnable;
 import me.hsgamer.blocommands.BloCommands;
 import me.hsgamer.blocommands.api.action.Action;
 import me.hsgamer.blocommands.api.action.ActionBundle;
@@ -16,7 +18,7 @@ import java.util.*;
 import java.util.logging.Level;
 import java.util.stream.Collectors;
 
-public class BlockManager {
+public class BlockManager implements Loadable, PostEnable {
     private static final PathString BLOCKS_PATH = new PathString("blocks");
     private static final String LOCATION_PATH = "location";
     private static final String ACTION_PATH = "action";
@@ -32,12 +34,12 @@ public class BlockManager {
         this.plugin = plugin;
     }
 
-    public void setup() {
+    private void setup() {
         config.setup();
         loadBlocks();
     }
 
-    public void reload() {
+    private void reload() {
         clearBlocks();
         config.reload();
         loadBlocks();
@@ -95,7 +97,7 @@ public class BlockManager {
                         }
 
                         List<String> stringActionList = CollectionUtils.createStringListFromObject(rawActionList);
-                        List<Action> actionList = plugin.getActionManager().deserialize(stringActionList);
+                        List<Action> actionList = plugin.get(ActionManager.class).deserialize(stringActionList);
                         actionBlock.getActionBundle(interactType).addAction(actionList);
                     }
                 }
@@ -118,7 +120,7 @@ public class BlockManager {
                 List<Action> actionList = actionEntry.getValue().getActions();
                 if (actionList.isEmpty()) continue;
 
-                actionMap.put(actionEntry.getKey().name(), plugin.getActionManager().serialize(actionList));
+                actionMap.put(actionEntry.getKey().name(), plugin.get(ActionManager.class).serialize(actionList));
             }
             settings.put(ACTION_PATH, actionMap);
 
@@ -184,5 +186,16 @@ public class BlockManager {
             byNameMap.remove(actionBlock.getId());
         }
         loadBlockByLocation();
+    }
+
+    @Override
+    public void postEnable() {
+        setup();
+    }
+
+    @Override
+    public void disable() {
+        save();
+        clearBlocks();
     }
 }

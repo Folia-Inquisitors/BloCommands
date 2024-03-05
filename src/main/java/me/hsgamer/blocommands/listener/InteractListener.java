@@ -1,23 +1,22 @@
 package me.hsgamer.blocommands.listener;
 
-import me.hsgamer.blocommands.BloCommands;
+import io.github.projectunified.minelib.plugin.base.BasePlugin;
+import io.github.projectunified.minelib.plugin.listener.ListenerComponent;
 import me.hsgamer.blocommands.api.block.ActionBlock;
 import me.hsgamer.blocommands.api.block.BlockInteractType;
+import me.hsgamer.blocommands.manager.BlockManager;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 
 import java.util.Optional;
 
-public class InteractListener implements Listener {
-    private final BloCommands plugin;
-
-    public InteractListener(BloCommands plugin) {
-        this.plugin = plugin;
+public class InteractListener extends ListenerComponent {
+    public InteractListener(BasePlugin plugin) {
+        super(plugin);
     }
 
     @EventHandler
@@ -28,7 +27,7 @@ public class InteractListener implements Listener {
         Player player = event.getPlayer();
         Location location = block.getLocation();
 
-        Optional<ActionBlock> optional = plugin.getBlockManager().getBlock(location);
+        Optional<ActionBlock> optional = plugin.get(BlockManager.class).getBlock(location);
         if (!optional.isPresent()) return;
         ActionBlock actionBlock = optional.get();
 

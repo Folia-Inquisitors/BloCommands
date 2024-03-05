@@ -1,10 +1,12 @@
 package me.hsgamer.blocommands.api.block;
 
+import io.github.projectunified.minelib.scheduler.async.AsyncScheduler;
+import me.hsgamer.blocommands.BloCommands;
 import me.hsgamer.blocommands.api.action.ActionBundle;
-import me.hsgamer.hscore.bukkit.scheduler.Scheduler;
 import me.hsgamer.hscore.task.BatchRunnable;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -44,6 +46,6 @@ public class ActionBlock {
         ActionBundle actionBundle = actionBundleMap.get(type);
         if (actionBundle == null) return;
         BatchRunnable runnable = actionBundle.createRunnable(player, location);
-        Scheduler.current().async().runTask(runnable);
+        AsyncScheduler.get(JavaPlugin.getPlugin(BloCommands.class)).run(runnable);
     }
 }

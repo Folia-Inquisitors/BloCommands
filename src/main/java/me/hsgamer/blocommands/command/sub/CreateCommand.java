@@ -2,6 +2,7 @@ package me.hsgamer.blocommands.command.sub;
 
 import me.hsgamer.blocommands.BloCommands;
 import me.hsgamer.blocommands.api.block.ActionBlock;
+import me.hsgamer.blocommands.manager.BlockManager;
 import me.hsgamer.hscore.bukkit.command.sub.SubCommand;
 import me.hsgamer.hscore.bukkit.utils.MessageUtils;
 import org.bukkit.block.Block;
@@ -19,18 +20,18 @@ public class CreateCommand extends SubCommand {
 
     @Override
     public void onSubCommand(@NotNull CommandSender sender, @NotNull String label, @NotNull String... args) {
-        if (plugin.getBlockManager().getBlock(args[0]).isPresent()) {
+        if (plugin.get(BlockManager.class).getBlock(args[0]).isPresent()) {
             MessageUtils.sendMessage(sender, "&cThe block is already created");
         } else {
-            ActionBlock actionBlock = plugin.getBlockManager().createBlock(args[0]);
+            ActionBlock actionBlock = plugin.get(BlockManager.class).createBlock(args[0]);
             if (sender instanceof Player) {
                 Block block = ((Player) sender).getTargetBlock(null, 10);
                 if (block.getType().isBlock()) {
                     actionBlock.setLocation(block.getLocation());
-                    plugin.getBlockManager().loadBlockByLocation();
+                    plugin.get(BlockManager.class).loadBlockByLocation();
                 }
             }
-            plugin.getBlockManager().save();
+            plugin.get(BlockManager.class).save();
             MessageUtils.sendMessage(sender, "&aThe block is created");
             if (actionBlock.getLocation() == null) {
                 MessageUtils.sendMessage(sender, "&eThe location of the block is not set yet");

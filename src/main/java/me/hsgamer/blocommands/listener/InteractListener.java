@@ -14,9 +14,16 @@ import org.bukkit.event.player.PlayerInteractEvent;
 
 import java.util.Optional;
 
-public class InteractListener extends ListenerComponent {
+public class InteractListener implements ListenerComponent {
+    private final BasePlugin plugin;
+
     public InteractListener(BasePlugin plugin) {
-        super(plugin);
+        this.plugin = plugin;
+    }
+
+    @Override
+    public BasePlugin getPlugin() {
+        return plugin;
     }
 
     @EventHandler

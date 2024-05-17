@@ -12,6 +12,7 @@ import org.bukkit.entity.Player;
 
 import java.util.*;
 import java.util.function.BooleanSupplier;
+import java.util.logging.Level;
 
 public class FlashManager implements Loadable {
     private final BloCommands plugin;
@@ -25,7 +26,12 @@ public class FlashManager implements Loadable {
     @Override
     public void enable() {
         if (VersionUtils.isAtLeast(17)) {
-            glowingBlocks = new GlowingBlocks(plugin);
+            try {
+                glowingBlocks = new GlowingBlocks(plugin);
+            } catch (Throwable throwable) {
+                plugin.getLogger().log(Level.WARNING, "Failed to initialize GlowingBlocks. The feature is now disabled", throwable);
+                glowingBlocks = null;
+            }
         }
     }
 

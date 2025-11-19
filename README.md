@@ -10,7 +10,7 @@ mvn clean install
  
 ## Description
 
-Simple executable command plugin. It is highly optimized and heavily tested. Feel free to constribute.
+This plugin allows buttons and pressure plates to execute commands. It is highly optimized and heavily tested. Feel free to constribute.
 
 ## Commands
 ```
